@@ -29,15 +29,15 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt update
 sudo apt install -y containerd.io
-mkdir -p /etc/containerd
-containerd config default>/etc/containerd/config.toml
+sudo mkdir -p /etc/containerd
+sudo containerd config default>/etc/containerd/config.toml
 sudo systemctl restart containerd
 sudo systemctl enable containerd   
 
 sudo systemctl enable kubelet
 sudo kubeadm config images pull --cri-socket /run/containerd/containerd.sock --kubernetes-version v1.24.3
 
-sudo kubeadm init   --pod-network-cidr=10.244.0.0/16   --upload-certs --kubernetes-version=v1.24.3  --control-plane-endpoint=ip --ignore-preflight-errors=all  --cri-socket /run/containerd/containerd.sock
+"change in this line" ---> sudo kubeadm init   --pod-network-cidr=10.244.0.0/16   --upload-certs --kubernetes-version=v1.24.3  --control-plane-endpoint={Your Public IP} --ignore-preflight-errors=all  --cri-socket /run/containerd/containerd.sock
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
